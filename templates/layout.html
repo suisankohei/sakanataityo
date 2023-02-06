@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <!-- cssファイルの読み込み -->
+    <link rel=stylesheet href="{{url_for('static', filename='css/style.css')}}">
+    <!-- ファビコンの設定 -->
+    <link rel="icon" href="{{url_for('static',  filename='images/favicon.ico')}}">
+    <title>魚体重計測ツール</title>
+</head>
+<body>
+<header>
+    <div class="logo">
+        <a href='問題'>魚体重計測ツール</a>
+    </div>
+    <nav class="menu">
+        <ul>
+            <li><a href="#">NEWS</a></li>
+            <li><a href="/upload">csv</a></li>
+            <li><a href="#">SERVICES</a></li>
+            <li><a href="#">CONTACT</a></li>
+        </ul>
+    </nav>
+</header>
+<!-- templateの継承部分 -->
+{% block content %}
+{% endblock %}
+<!-------------------->
+<footer>
+    <div class="footer_logo">︎:著作権: GeekSalon_AI_html_cssゼミ</div>
+</footer>
+</body>
+</html>

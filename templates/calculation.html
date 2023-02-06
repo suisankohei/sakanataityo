@@ -1,0 +1,34 @@
+{% block content %}
+<main>
+    <div class="content">
+        <h1>体重を求めたい魚の体長を入力してください</h1>
+        <form action="/calc" method="POST">
+            <p>
+                <label><span>魚種(カタカナ)は？</span>
+                    <input type="text" name="species" placeholder="魚種">
+                </label>
+            </p>
+            <p>
+                <label><span>魚体長(cm)は？</s
+                    pan>
+                    <input type="text" name="length" placeholder='体長'>
+                </label>
+            </p>
+            <div class="calc_btn">
+                <input type="submit" value='計算する'>
+            </div>
+        </form>
+    </div>
+<!----------------------------------->
+
+    <div class="box">
+        {% if result %}
+<p>魚体重(g)は</p>
+<h2 class="result"> {{result}} </h2>
+{% else %}
+<h2 class="result">魚体長を入力してください</h2>
+{% endif %}
+    </div>
+</main>
+{% endblock %}
+<!----------------------------------->
