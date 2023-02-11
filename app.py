@@ -1,12 +1,12 @@
-from flask import Flask, render_template, request, url_for, redirect
+from flask import Flask, render_template, request, url_for, redirect,send_file, make_response, send_from_directory
 from werkzeug.datastructures import FileStorage
 from calculation import sakana_weight
-from calculation import sakana_wight_list
+from calculation import sakana_weight_list
 import pandas as pd
 import os
 
 XLSX_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-app = Flask(__name__,static_folder=None)
+app = Flask(__name__)
 
 @app.route("/")
 def index():
@@ -46,9 +46,7 @@ def upload():
 def uploaded_file(filename):
     return render_template('uploaded_file.html', filename=filename)
 
-if __name__ == '__main__':
-    app.run(debug=True)
-#--------------------------------------#
+#--------------#
 @app.route('/upload', methods=['GET', 'POST'])
 def clcsv():
     if request.method == 'GET':
@@ -68,4 +66,9 @@ def calculation2():
         # 魚体重の計算
         answer = sakana_weight_list(filename,species)
 
-        return render_template('uploaded_file.html', result=answer)
+        return send_file(answer, as_attachment = True, \
+        attachment_filename = "fish_taizyu.csv")
+        
+
+if __name__ == '__main__':
+    app.run(debug=True)

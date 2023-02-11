@@ -24,21 +24,21 @@ def sakana_weight(species,length):
 
 #--------------------------------------#
 
-def sakana_wight_list(filename,species):
-    df_2 = pd.read_csv(os.path.join('./static/csv', filename), encoding="shift-jis",heade=False,index=False)
-    try:
-        max_i = int(len(df_2))
-        df_1 = df[df["和名"] == species ]
-        kesu1 = float(df_1["a"])
-        kesu2 = float(df_1["b"])
-        for i in range(0,max_i):
-            if length > 0:
-             length =  float(df_2.iloc[i,1])
-             weight = float(kesu1*(length**kesu2)/100)
-             a.append(weight)
-            return os.path.join('./static/csv', filename)
+def sakana_weight_list(filename,species):
+    df_2 = pd.read_csv(os.path.join('./static/csv', filename), encoding="shift-jis",header = None)
+    max_i = int(len(df_2))
+    df_1 = df[df["和名"] == species ]
+    kesu1 = float(df_1["a"])
+    kesu2 = float(df_1["b"])
+    a = []
+    for i in range(0,max_i):
+        length =  float(df_2.iloc[i,1])
+        if length > 0:
+            weight = float(kesu1*(length**kesu2)/100)
+            a.append(weight)
         else:
             raise Exception # exceptに飛ばす
-    except:
-        return False
+    df_2 = df_2.assign(weight = a)
+    df_2.to_csv(os.path.join('./static/csv',filename),header=False,index=False)
+    return os.path.join('./static/csv', filename)
 
