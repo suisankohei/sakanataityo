@@ -5,8 +5,8 @@ from calculation import sakana_wight_list
 import pandas as pd
 import os
 
-
-app = Flask(__name__)
+XLSX_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+app = Flask(__name__,static_folder=None)
 
 @app.route("/")
 def index():
@@ -53,3 +53,19 @@ if __name__ == '__main__':
 def clcsv():
     if request.method == 'GET':
         return render_template('calculation2.html')
+
+#---------------------------------------#
+
+#--------------------------------------#
+
+@app.route("/calc2",methods=['GET','POST'])
+def calculation2():
+    if request.method == "GET":
+        return render_template('calculation2.html')
+    elif request.method  == "POST":
+        species = request.form['species']
+        filename  = request.form['filename']
+        # 魚体重の計算
+        answer = sakana_weight_list(filename,species)
+
+        return render_template('uploaded_file.html', result=answer)

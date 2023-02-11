@@ -7,5 +7,21 @@
 <body>
     <h1>ファイルアップロード完了</h1>
     <h2>{{filename}}</h2>
+    <form action="/calc2" method="POST">
+        <p>
+            <label><span>魚種(カタカナ)は？</span>
+                <input type="text" name="species" placeholder="魚種">
+            </label>
+        </p>
+        <p>
+            <label><span>filenameは？</span>
+                <input type="text" name="filename" placeholder="ファイル名">
+            </label>
+        </p>
+        <div class="calc_btn">
+            <input type="submit" value='計算する'>
+        </div>
+    </form>
+
 </body>
 </html>
