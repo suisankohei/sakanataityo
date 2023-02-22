@@ -1,5 +1,11 @@
 import pandas as pd
 import os
+##フィッティングに使うもの
+from scipy.optimize import curve_fit
+import numpy as np
+## 図示のために使うもの
+import seaborn as sns
+import matplotlib.pyplot as plt
 df = pd.read_csv("fish.csv", encoding="shift-jis")
 
 
@@ -41,4 +47,17 @@ def sakana_weight_list(filename,species):
     df_2 = df_2.assign(weight = a)
     df_2.to_csv(os.path.join('./static/csv',filename),header=False,index=False)
     return os.path.join('./static/csv', filename)
+
+#--------------------------------------#
+def func1(X, a, b): # １次式近似
+    Y = a * X ** b
+    return Y
+
+def sakana_weight_line(filename):
+     df_3 = pd.read_csv(os.path.join('./static/csv', filename), encoding="shift-jis",header = None)
+     length =  float(df_3["length"])
+     weight =  float(df_3["weight"])
+     popt, pcov = curve_fit(func1,length,weight) 
+     return popt,pcov
+
 

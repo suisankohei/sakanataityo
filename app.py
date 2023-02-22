@@ -4,6 +4,7 @@ from calculation import sakana_weight
 from calculation import sakana_weight_list
 import pandas as pd
 import os
+from calculation import sakana_weight_line
 
 XLSX_MIMETYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
 app = Flask(__name__)
@@ -54,7 +55,7 @@ def clcsv():
 
 #---------------------------------------#
 
-#--------------------------------------#
+#---------------------------------------#
 
 @app.route("/calc2",methods=['GET','POST'])
 def calculation2():
@@ -68,7 +69,46 @@ def calculation2():
 
         return send_file(answer, as_attachment = True, \
         attachment_filename = "fish_taizyu.csv")
-        
+
+#----------------------------------------#
+
+@app.route("/calc3",methods=['GET','POST'])
+def calculation3():
+    if request.method == "GET":
+        return render_template('calculation2.html')
+    elif request.method  == "POST":
+        filename  = request.form['filename']
+        # 魚体重の計算
+        answer = sakana_weight_line(filename)
+
+        return render_template('uploaded_file2.html', result=answer)  
+
+#----------------------------------------#
+
+@app.route('/upload2', methods=['GET', 'POST'])
+def upload2():
+    # URLでhttp://127.0.0.1:5000/uploadを指定したときはGETリクエストとなるのでこっち
+    if request.method == 'GET':
+        return render_template('upload2.html')
+    # formでsubmitボタンが押されるとPOSTリクエストとなるのでこっち
+    elif request.method == 'POST':
+        csv_data = request.files['data']
+        if isinstance(csv_data, FileStorage) and csv_data.content_type == 'text/csv':
+            df = pd.read_csv(csv_data,index_col=None,header=None)
+            df.to_csv(os.path.join('./static/csv', csv_data.filename),header=False,index=False)
+            return redirect(url_for('uploaded_file2', filename=csv_data.filename))
+        else:
+            raise ValueError('data is not csv')
+
+#----------------------------------------#
+
+@app.route('/uploaded_file2/<string:filename>')
+def uploaded_file2(filename):
+    return render_template('uploaded_file2.html', filename=filename)
+
+#----------------------------------------#
+
+#----------------------------------------#
 
 if __name__ == '__main__':
     app.run(debug=True)
